@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Verdadero Reto</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Manrope:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg: #150B2E;
+  --bg2: #1E1240;
+  --card: #241650;
+  --card2: #2C1B63;
+  --coral: #FF4D6D;
+  --gold: #FFC857;
+  --teal: #2EC4B6;
+  --cream: #FDF6EC;
+  --muted: #B8A9D9;
+  --line: rgba(255,255,255,0.09);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+html,body{margin:0;padding:0;}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(255,77,109,0.16), transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(46,196,182,0.14), transparent 45%),
+    var(--bg);
+  color:var(--cream);
+  font-family:'Manrope', sans-serif;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding: 24px 16px 60px;
+}
+h1,h2,h3,.display{font-family:'Baloo 2', sans-serif; font-weight:800;}
+.screen{width:100%; max-width:520px; display:flex; flex-direction:column; align-items:center; animation: rise .45s ease;}
+@keyframes rise{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+.hidden{display:none !important;}
+
+/* ---- Header / brand ---- */
+.brand{display:flex; align-items:center; gap:10px; margin-bottom:28px;}
+.brand .dot{width:14px; height:14px; border-radius:50%; background:var(--coral); box-shadow:0 0 0 4px rgba(255,77,109,0.18);}
+.brand h1{font-size:26px; letter-spacing:0.5px; margin:0; color:var(--cream);}
+.brand h1 span{color:var(--gold);}
+
+/* ---- Buttons ---- */
+button{
+  font-family:'Baloo 2', sans-serif;
+  cursor:pointer;
+  border:none;
+  border-radius:16px;
+  font-weight:700;
+  letter-spacing:.3px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+button:active{transform: scale(0.97);}
+.btn-primary{
+  width:100%;
+  padding:18px;
+  font-size:19px;
+  color:#1B0E3B;
+  background: linear-gradient(180deg, var(--gold), #F5A623);
+  box-shadow: 0 6px 0 #B87A12, 0 10px 18px rgba(255,200,87,0.25);
+}
+.btn-primary:active{box-shadow: 0 2px 0 #B87A12;}
+.btn-secondary{
+  width:100%;
+  padding:18px;
+  font-size:19px;
+  color:var(--cream);
+  background: var(--card2);
+  border:2px solid var(--line);
+}
+.btn-secondary:active{box-shadow:none;}
+.btn-coral{
+  width:100%;
+  padding:16px;
+  font-size:17px;
+  color:#fff;
+  background: linear-gradient(180deg, var(--coral), #E23856);
+  box-shadow: 0 6px 0 #A31F38, 0 10px 18px rgba(255,77,109,0.25);
+}
+.btn-coral:active{box-shadow: 0 2px 0 #A31F38;}
+.btn-ghost{
+  background:transparent;
+  color:var(--muted);
+  padding:10px 14px;
+  font-size:14px;
+  font-family:'Manrope',sans-serif;
+  font-weight:700;
+}
+
+.stack{display:flex; flex-direction:column; gap:14px; width:100%;}
+
+/* ---- Card ---- */
+.card{
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:26px 22px;
+  width:100%;
+}
+.label{font-size:12px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); font-weight:800; margin-bottom:10px;}
+
+/* ---- Ticket / code tiles (signature element) ---- */
+.ticket{
+  position:relative;
+  width:100%;
+  background: linear-gradient(135deg, var(--card2), var(--card));
+  border-radius:20px;
+  padding:22px 18px 26px;
+  border:1px dashed rgba(255,200,87,0.4);
+  text-align:center;
+}
+.ticket::before, .ticket::after{
+  content:"";
+  position:absolute;
+  width:22px; height:22px;
+  background:var(--bg);
+  border-radius:50%;
+  top:50%; transform:translateY(-50%);
+}
+.ticket::before{left:-11px;}
+.ticket::after{right:-11px;}
+.code-tiles{display:flex; justify-content:center; gap:8px; margin:10px 0 4px;}
+.tile{
+  width:52px; height:62px;
+  background: linear-gradient(180deg, #3A2478, #2C1B63);
+  border:2px solid rgba(255,200,87,0.55);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Baloo 2', sans-serif;
+  font-size:28px; font-weight:800;
+  color:var(--gold);
+}
+.ticket .hint{font-size:13px; color:var(--muted); margin-top:12px;}
+
+/* ---- Inputs ---- */
+input[type=text]{
+  width:100%;
+  padding:16px 16px;
+  border-radius:14px;
+  border:2px solid var(--line);
+  background: var(--bg2);
+  color:var(--cream);
+  font-family:'Manrope',sans-serif;
+  font-size:17px;
+  font-weight:700;
+  outline:none;
+}
+input[type=text]:focus{border-color:var(--gold);}
+input.code-input{
+  text-transform:uppercase;
+  letter-spacing:8px;
+  text-align:center;
+  font-family:'Baloo 2', sans-serif;
+  font-size:22px;
+}
+textarea{
+  width:100%;
+  min-height:96px;
+  padding:16px;
+  border-radius:14px;
+  border:2px solid var(--line);
+  background: var(--bg2);
+  color:var(--cream);
+  font-family:'Manrope',sans-serif;
+  font-size:17px;
+  font-weight:700;
+  outline:none;
+  resize:vertical;
+}
+textarea:focus{border-color:var(--gold);}
+
+/* ---- Player chips ---- */
+.players-wrap{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+.chip{
+  background: rgba(46,196,182,0.14);
+  border:1px solid rgba(46,196,182,0.4);
+  color:var(--teal);
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:700;
+  display:flex; align-items:center; gap:6px;
+}
+.chip .pulse{width:7px; height:7px; border-radius:50%; background:var(--teal); animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ---- Question banner ---- */
+.question-banner{
+  width:100%;
+  background: linear-gradient(135deg, var(--coral), #E23856);
+  border-radius:20px;
+  padding:22px 20px;
+  margin-bottom:18px;
+  box-shadow: 0 10px 24px rgba(255,77,109,0.25);
+}
+.question-banner .eyebrow{font-size:11px; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; font-weight:800; margin-bottom:6px;}
+.question-banner .q{font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; line-height:1.3;}
+
+/* ---- Answers list ---- */
+.answers-list{width:100%; display:flex; flex-direction:column; gap:10px;}
+.answer-card{
+  background: var(--card);
+  border:1px solid var(--line);
+  border-left:4px solid var(--gold);
+  border-radius:14px;
+  padding:14px 16px;
+  animation: pop .35s ease;
+}
+@keyframes pop{ from{opacity:0; transform:scale(.92);} to{opacity:1; transform:scale(1);} }
+.answer-card .who{font-size:12px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px;}
+.answer-card .what{font-size:16px; font-weight:700; color:var(--cream);}
+.empty-note{color:var(--muted); font-size:14px; text-align:center; padding:20px 10px;}
+
+/* ---- Status text ---- */
+.status{color:var(--muted); font-size:14px; text-align:center; margin-top:10px;}
+.status strong{color:var(--teal);}
+
+/* ---- Tabs ---- */
+.tabs{display:flex; gap:8px; width:100%; margin-bottom:16px; background:var(--card2); padding:5px; border-radius:14px; border:1px solid var(--line);}
+.tab{
+  flex:1; text-align:center; padding:10px 8px; border-radius:10px;
+  font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px;
+  color:var(--muted); cursor:pointer; user-select:none;
+}
+.tab.active{background:linear-gradient(180deg, var(--gold), #F5A623); color:#1B0E3B;}
+
+/* ---- Wheel ---- */
+.wheel-wrap{position:relative; width:100%; display:flex; flex-direction:column; align-items:center;}
+.wheel-pointer{
+  width:0; height:0;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-top:22px solid var(--gold);
+  margin-bottom:-6px;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+  z-index:2;
+}
+#wheel-canvas{
+  border-radius:50%;
+  box-shadow: 0 0 0 8px var(--card2), 0 14px 30px rgba(0,0,0,0.45);
+  transition: transform 4s cubic-bezier(0.17, 0.89, 0.28, 1.01);
+}
+.wheel-hub{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:38px; height:38px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #FFDD8A, var(--gold));
+  border:3px solid #1B0E3B;
+  z-index:2;
+}
+
+/* ---- Selection banner ---- */
+.selection-banner{
+  width:100%;
+  background: linear-gradient(135deg, var(--teal), #1F9E92);
+  border-radius:20px;
+  padding:18px 20px;
+  margin-bottom:16px;
+  text-align:center;
+  box-shadow: 0 10px 24px rgba(46,196,182,0.25);
+  animation: pop .4s ease;
+}
+.selection-banner .eyebrow{font-size:11px; text-transform:uppercase; letter-spacing:1.5px; opacity:.85; font-weight:800; margin-bottom:6px;}
+.selection-banner .name{font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800;}
+
+/* ---- Top bar within game screens ---- */
+.topbar{width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+.roompill{
+  background:var(--card2); border:1px solid var(--line); border-radius:999px;
+  padding:6px 14px; font-family:'Baloo 2',sans-serif; letter-spacing:3px; font-size:15px; color:var(--gold); font-weight:700;
+}
+.err{color:var(--coral); font-size:14px; font-weight:700; text-align:center; min-height:18px;}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="dot"></div>
+  <h1>Verdadero <span>Reto</span></h1>
+</div>
+
+<!-- ===== LANDING ===== -->
+<div class="screen" id="screen-landing">
+  <div class="stack">
+    <button class="btn-primary" onclick="goCreate()">🎬 Crear sala (anfitrión)</button>
+    <button class="btn-secondary" onclick="goJoin()">📱 Unirme a una sala</button>
+  </div>
+  <p class="status" style="margin-top:22px;">Un dispositivo crea la sala y la comparte.<br>Los demás se unen con el código desde su celular.</p>
+</div>
+
+<!-- ===== JOIN ===== -->
+<div class="screen hidden" id="screen-join">
+  <div class="card stack">
+    <div>
+      <div class="label">Código de sala</div>
+      <input type="text" id="join-code" class="code-input" maxlength="4" placeholder="ABCD">
+    </div>
+    <div>
+      <div class="label">Tu nombre</div>
+      <input type="text" id="join-name" maxlength="18" placeholder="¿Cómo te llamas?">
+    </div>
+    <div class="err" id="join-err"></div>
+    <button class="btn-coral" onclick="joinRoom()">Unirme →</button>
+    <button class="btn-ghost" onclick="goLanding()">← Volver</button>
+  </div>
+</div>
+
+<!-- ===== HOST LOBBY ===== -->
+<div class="screen hidden" id="screen-host-lobby">
+  <div class="ticket">
+    <div class="label">Código de la sala</div>
+    <div class="code-tiles" id="host-code-tiles"></div>
+    <div class="hint">Compártelo con los jugadores para que se unan</div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="label">Jugadores conectados</div>
+    <div class="players-wrap" id="host-players"></div>
+    <div class="empty-note" id="host-players-empty">Todavía no se ha unido nadie…</div>
+  </div>
+  <button class="btn-primary" style="margin-top:16px;" onclick="startGame()">Empezar el juego →</button>
+  <button class="btn-ghost" onclick="leaveToLanding()">← Cancelar sala</button>
+</div>
+
+<!-- ===== HOST GAME ===== -->
+<div class="screen hidden" id="screen-host-game">
+  <div class="topbar">
+    <div class="roompill" id="host-game-code"></div>
+    <button class="btn-ghost" onclick="leaveToLanding()">Terminar</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tab-btn-question" onclick="switchTab('question')">❓ Pregunta</div>
+    <div class="tab" id="tab-btn-wheel" onclick="switchTab('wheel')">🎡 Ruleta</div>
+  </div>
+
+  <div id="tab-question">
+    <div class="card stack" id="host-ask-box">
+      <div class="label">Escribe la pregunta o el reto</div>
+      <input type="text" id="host-question-input" placeholder="Ej: ¿Cuál es tu comida favorita?">
+      <button class="btn-primary" onclick="publishQuestion()">Enviar a todos →</button>
+    </div>
+
+    <div id="host-active-box" class="hidden" style="width:100%;">
+      <div class="question-banner">
+        <div class="eyebrow">Pregunta actual</div>
+        <div class="q" id="host-current-q"></div>
+      </div>
+      <div class="label" style="margin-bottom:10px;">Respuestas en vivo</div>
+      <div class="answers-list" id="host-answers"></div>
+      <div class="empty-note hidden" id="host-answers-empty">Esperando respuestas…</div>
+      <button class="btn-coral" style="margin-top:16px;" onclick="newQuestion()">Nueva pregunta →</button>
+    </div>
+  </div>
+
+  <div id="tab-wheel" class="hidden" style="width:100%;">
+    <div class="card wheel-wrap">
+      <div class="label">Gira para ver a quién le toca</div>
+      <div class="wheel-pointer"></div>
+      <div style="position:relative;">
+        <canvas id="wheel-canvas" width="280" height="280"></canvas>
+        <div class="wheel-hub"></div>
+      </div>
+      <button class="btn-primary" style="margin-top:20px;" onclick="spinWheel()">🎡 Girar la ruleta</button>
+      <div class="empty-note hidden" id="wheel-empty">Necesitas al menos 2 jugadores conectados para girar.</div>
+    </div>
+    <div id="host-selection-box" class="hidden" style="margin-top:16px;">
+      <div class="selection-banner">
+        <div class="eyebrow">Le toca responder a</div>
+        <div class="name" id="host-selected-name"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PLAYER GAME ===== -->
+<div class="screen hidden" id="screen-player-game">
+  <div class="topbar">
+    <div class="roompill" id="player-game-code"></div>
+    <button class="btn-ghost" onclick="leaveToLanding()">Salir</button>
+  </div>
+
+  <div id="player-selection-box" class="hidden">
+    <div class="selection-banner">
+      <div class="eyebrow">🎡 La ruleta eligió a</div>
+      <div class="name" id="player-selected-name"></div>
+    </div>
+  </div>
+
+  <div id="player-waiting" class="card" style="text-align:center;">
+    <div class="label">Estado</div>
+    <p style="font-size:16px; color:var(--muted);">Esperando a que el anfitrión envíe una pregunta o gire la ruleta…</p>
+  </div>
+
+  <div id="player-active-box" class="hidden" style="width:100%;">
+    <div class="question-banner">
+      <div class="eyebrow">Pregunta actual</div>
+      <div class="q" id="player-current-q"></div>
+    </div>
+
+    <div class="card stack" id="player-answer-box">
+      <div class="label">Tu respuesta</div>
+      <textarea id="player-answer-input" placeholder="Escribe aquí…"></textarea>
+      <button class="btn-primary" onclick="submitAnswer()">Enviar respuesta →</button>
+    </div>
+
+    <div id="player-submitted-note" class="status hidden">✅ Respuesta enviada. <strong>Viendo respuestas en vivo</strong></div>
+
+    <div class="label" style="margin-top:18px; margin-bottom:10px;">Respuestas en vivo</div>
+    <div class="answers-list" id="player-answers"></div>
+    <div class="empty-note hidden" id="player-answers-empty">Todavía no hay respuestas…</div>
+  </div>
+</div>
+
+<script>
+let state = {
+  role: null,      // 'host' | 'player'
+  code: null,
+  name: null,
+  pollTimer: null,
+  hasAnsweredRound: 0,   // round number the player last answered
+};
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function stopPolling(){
+  if(state.pollTimer){ clearInterval(state.pollTimer); state.pollTimer = null; }
+}
+
+function goLanding(){
+  stopPolling();
+  state = {role:null, code:null, name:null, pollTimer:null, hasAnsweredRound:0};
+  show('screen-landing');
+}
+function leaveToLanding(){ goLanding(); }
+
+function goJoin(){
+  document.getElementById('join-err').textContent = '';
+  show('screen-join');
+}
+
+function randomCode(){
+  const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let c = '';
+  for(let i=0;i<4;i++) c += letters[Math.floor(Math.random()*letters.length)];
+  return c;
+}
+
+async function apiGetRoom(code){
+  const r = await fetch('/api/room?code=' + encodeURIComponent(code));
+  if(!r.ok) throw new Error('room not found');
+  return await r.json();
+}
+
+async function apiSetRoom(code, room){
+  const r = await fetch('/api/room', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code, room: room })
+  });
+  if(!r.ok) throw new Error('failed to save room');
+  return true;
+}
+
+function renderTiles(code){
+  const wrap = document.getElementById('host-code-tiles');
+  wrap.innerHTML = '';
+  for(const ch of code){
+    const t = document.createElement('div');
+    t.className = 'tile';
+    t.textContent = ch;
+    wrap.appendChild(t);
+  }
+}
+
+async function goCreate(){
+  const code = randomCode();
+  state.role = 'host';
+  state.code = code;
+  const room = { question: null, round: 0, players: {}, answers: {}, createdAt: Date.now() };
+  try{
+    await apiSetRoom(code, room);
+  }catch(e){
+    alert('No se pudo crear la sala. Intenta de nuevo.');
+    return;
+  }
+  renderTiles(code);
+  show('screen-host-lobby');
+  pollAsHostLobby();
+}
+
+async function joinRoom(){
+  const codeRaw = document.getElementById('join-code').value.trim().toUpperCase();
+  const name = document.getElementById('join-name').value.trim();
+  const errEl = document.getElementById('join-err');
+  errEl.textContent = '';
+  if(codeRaw.length !== 4){ errEl.textContent = 'El código debe tener 4 letras.'; return; }
+  if(!name){ errEl.textContent = 'Escribe tu nombre.'; return; }
+
+  let room;
+  try{
+    room = await apiGetRoom(codeRaw);
+  }catch(e){
+    errEl.textContent = 'No existe una sala con ese código.';
+    return;
+  }
+
+  room.players[name] = { joinedAt: Date.now() };
+  try{
+    await apiSetRoom(codeRaw, room);
+  }catch(e){
+    errEl.textContent = 'Error al unirse. Intenta de nuevo.';
+    return;
+  }
+
+  state.role = 'player';
+  state.code = codeRaw;
+  state.name = name;
+  state.hasAnsweredRound = 0;
+  document.getElementById('player-game-code').textContent = codeRaw;
+  show('screen-player-game');
+  pollAsPlayer();
+}
+
+function pollAsHostLobby(){
+  stopPolling();
+  const tick = async () => {
+    try{
+      const room = await apiGetRoom(state.code);
+      renderPlayersList(room);
+    }catch(e){ /* ignore transient errors */ }
+  };
+  tick();
+  state.pollTimer = setInterval(tick, 1500);
+}
+
+function renderPlayersList(room){
+  const wrap = document.getElementById('host-players');
+  const empty = document.getElementById('host-players-empty');
+  const names = Object.keys(room.players || {});
+  wrap.innerHTML = '';
+  if(names.length === 0){
+    empty.classList.remove('hidden');
+  }else{
+    empty.classList.add('hidden');
+    names.forEach(n => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.innerHTML = '<span class="pulse"></span>' + n;
+      wrap.appendChild(chip);
+    });
+  }
+}
+
+async function startGame(){
+  document.getElementById('host-game-code').textContent = state.code;
+  show('screen-host-game');
+  drawWheelFromRoom();
+  pollAsHost();
+}
+
+async function publishQuestion(){
+  const input = document.getElementById('host-question-input');
+  const q = input.value.trim();
+  if(!q) return;
+  let room;
+  try{
+    room = await apiGetRoom(state.code);
+  }catch(e){ alert('Error al leer la sala.'); return; }
+
+  room.question = q;
+  room.round = (room.round || 0) + 1;
+  room.answers = {};
+  await apiSetRoom(state.code, room);
+  input.value = '';
+
+  document.getElementById('host-ask-box').classList.add('hidden');
+  document.getElementById('host-active-box').classList.remove('hidden');
+  document.getElementById('host-current-q').textContent = q;
+}
+
+async function newQuestion(){
+  document.getElementById('host-active-box').classList.add('hidden');
+  document.getElementById('host-ask-box').classList.remove('hidden');
+}
+
+function pollAsHost(){
+  stopPolling();
+  const tick = async () => {
+    try{
+      const room = await apiGetRoom(state.code);
+      if(room.question){
+        document.getElementById('host-current-q').textContent = room.question;
+      }
+      renderAnswers(room, 'host-answers', 'host-answers-empty');
+
+      const newPlayers = Object.keys(room.players || {});
+      if(newPlayers.length !== wheelPlayers.length || newPlayers.some((p,i)=>p!==wheelPlayers[i])){
+        wheelPlayers = newPlayers;
+        if(!document.getElementById('tab-wheel').classList.contains('hidden')) paintWheel();
+        document.getElementById('wheel-empty').classList.toggle('hidden', wheelPlayers.length >= 2);
+      }
+      if(room.selectedPlayer && room.selectionId){
+        document.getElementById('host-selected-name').textContent = room.selectedPlayer;
+        document.getElementById('host-selection-box').classList.remove('hidden');
+      }
+    }catch(e){ /* ignore */ }
+  };
+  tick();
+  state.pollTimer = setInterval(tick, 1500);
+}
+
+function pollAsPlayer(){
+  stopPolling();
+  const tick = async () => {
+    try{
+      const room = await apiGetRoom(state.code);
+
+      if(room.selectedPlayer && room.selectionId){
+        document.getElementById('player-selected-name').textContent = room.selectedPlayer;
+        document.getElementById('player-selection-box').classList.remove('hidden');
+      }
+
+      if(room.question){
+        document.getElementById('player-waiting').classList.add('hidden');
+        document.getElementById('player-active-box').classList.remove('hidden');
+        document.getElementById('player-current-q').textContent = room.question;
+
+        const alreadyAnswered = room.answers && room.answers[state.name] && room.answers[state.name].round === room.round;
+        if(alreadyAnswered || state.hasAnsweredRound === room.round){
+          document.getElementById('player-answer-box').classList.add('hidden');
+          document.getElementById('player-submitted-note').classList.remove('hidden');
+        }else{
+          document.getElementById('player-answer-box').classList.remove('hidden');
+          document.getElementById('player-submitted-note').classList.add('hidden');
+        }
+        renderAnswers(room, 'player-answers', 'player-answers-empty');
+      }else{
+        document.getElementById('player-waiting').classList.remove('hidden');
+        document.getElementById('player-active-box').classList.add('hidden');
+      }
+    }catch(e){ /* ignore */ }
+  };
+  tick();
+  state.pollTimer = setInterval(tick, 1500);
+}
+
+function renderAnswers(room, listId, emptyId){
+  const wrap = document.getElementById(listId);
+  const empty = document.getElementById(emptyId);
+  const answers = room.answers || {};
+  const entries = Object.entries(answers).filter(([name, a]) => a.round === room.round);
+  wrap.innerHTML = '';
+  if(entries.length === 0){
+    empty.classList.remove('hidden');
+  }else{
+    empty.classList.add('hidden');
+    entries.sort((a,b) => a[1].at - b[1].at).forEach(([name, a]) => {
+      const card = document.createElement('div');
+      card.className = 'answer-card';
+      card.innerHTML = '<div class="who">' + escapeHtml(name) + '</div><div class="what">' + escapeHtml(a.text) + '</div>';
+      wrap.appendChild(card);
+    });
+  }
+}
+
+async function submitAnswer(){
+  const input = document.getElementById('player-answer-input');
+  const text = input.value.trim();
+  if(!text) return;
+
+  let room;
+  try{
+    room = await apiGetRoom(state.code);
+  }catch(e){ alert('Error al enviar. Intenta de nuevo.'); return; }
+
+  room.answers = room.answers || {};
+  room.answers[state.name] = { text: text, round: room.round, at: Date.now() };
+  await apiSetRoom(state.code, room);
+
+  state.hasAnsweredRound = room.round;
+  input.value = '';
+  document.getElementById('player-answer-box').classList.add('hidden');
+  document.getElementById('player-submitted-note').classList.remove('hidden');
+}
+
+/* ---- Tabs ---- */
+function switchTab(name){
+  document.getElementById('tab-question').classList.toggle('hidden', name !== 'question');
+  document.getElementById('tab-wheel').classList.toggle('hidden', name !== 'wheel');
+  document.getElementById('tab-btn-question').classList.toggle('active', name === 'question');
+  document.getElementById('tab-btn-wheel').classList.toggle('active', name === 'wheel');
+  if(name === 'wheel') drawWheelFromRoom();
+}
+
+/* ---- Wheel ---- */
+const wheelColors = ['#FF4D6D','#FFC857','#2EC4B6','#8B7CF6','#FF9F5A','#4EA1FF','#FF6BCB','#6EE7B7'];
+let wheelPlayers = [];
+let wheelRotation = 0;
+
+async function drawWheelFromRoom(){
+  try{
+    const room = await apiGetRoom(state.code);
+    wheelPlayers = Object.keys(room.players || {});
+  }catch(e){ wheelPlayers = []; }
+  paintWheel();
+  document.getElementById('wheel-empty').classList.toggle('hidden', wheelPlayers.length >= 2);
+}
+
+function paintWheel(){
+  const canvas = document.getElementById('wheel-canvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width/2, cy = canvas.height/2, r = canvas.width/2 - 4;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const n = wheelPlayers.length;
+  if(n === 0){
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle = '#2C1B63'; ctx.fill();
+    ctx.fillStyle = '#B8A9D9'; ctx.font = '600 14px Manrope'; ctx.textAlign = 'center';
+    ctx.fillText('Sin jugadores', cx, cy);
+    return;
+  }
+  const slice = (Math.PI*2) / n;
+  for(let i=0;i<n;i++){
+    const start = i*slice, end = start+slice;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,end);
+    ctx.closePath();
+    ctx.fillStyle = wheelColors[i % wheelColors.length];
+    ctx.fill();
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(start + slice/2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#1B0E3B';
+    ctx.font = '800 15px Baloo 2';
+    const label = wheelPlayers[i].length > 10 ? wheelPlayers[i].slice(0,9)+'…' : wheelPlayers[i];
+    ctx.fillText(label, r - 14, 5);
+    ctx.restore();
+  }
+}
+
+async function spinWheel(){
+  if(wheelPlayers.length < 2) return;
+  const canvas = document.getElementById('wheel-canvas');
+  const n = wheelPlayers.length;
+  const slice = 360 / n;
+  const winnerIndex = Math.floor(Math.random() * n);
+  // pointer is at top (12 o'clock); wheel slice i spans [i*slice, (i+1)*slice) starting at angle 0 = 3 o'clock in canvas draw,
+  // but visually we rotate the whole canvas element via CSS, so compute target so winner slice center lands under pointer (top).
+  const sliceCenterDeg = winnerIndex*slice + slice/2;
+  const extraSpins = 5*360;
+  // canvas draw starts slices at 0deg = pointing right (3 o'clock); pointer is at top (-90deg / 270deg).
+  // We want sliceCenter to end at -90deg after rotation: rotation = -90 - sliceCenterDeg (mod 360), plus extra spins.
+  const target = extraSpins + (270 - sliceCenterDeg);
+  wheelRotation += target;
+  canvas.style.transform = 'rotate(' + wheelRotation + 'deg)';
+
+  setTimeout(async () => {
+    const winnerName = wheelPlayers[winnerIndex];
+    try{
+      const room = await apiGetRoom(state.code);
+      room.selectedPlayer = winnerName;
+      room.selectionId = (room.selectionId || 0) + 1;
+      await apiSetRoom(state.code, room);
+      document.getElementById('host-selected-name').textContent = winnerName;
+      document.getElementById('host-selection-box').classList.remove('hidden');
+    }catch(e){ /* ignore */ }
+  }, 4100);
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
